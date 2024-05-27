@@ -1,0 +1,11 @@
+CF Sales = 
+var max_sales = MAXX(ALL('Xmas Dataset'[Country]),[t_sales])
+var min_sales = MINX(ALL('Xmas Dataset'[Country]),[t_sales])
+var color = 
+SWITCH(
+    True(),
+    [t_sales] = max_sales, "green",
+    [t_sales] = min_sales, "red",
+    "#404040"
+)
+RETURN color
