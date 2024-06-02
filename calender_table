@@ -1,0 +1,19 @@
+calendrer= 
+var startdate MIN(dataset [Date Column])
+var enddate MAX(railway [Date Column])
+
+RETURN
+ADDCOLUMNS(
+CALENDAR(startdate, enddate),
+"Year", YEAR ([Date]),
+"MonthNumber", MONTH([Date]),
+"Month", FORMAT([Date], "mmm"),
+"DayNumber", DAY ([Date]),
+"DayName", FORMAT ([Date], "ddd"),
+"Quarter", "Q" & FORMAT ([Date], "Q"),
+"WeekDay", WEEKDAY([Date]),
+"WeekDayName", FORMAT([Date], "ddd"),
+"IsWeekEnd", IF (WEEKDAY ([Date], 2) >= 6, TRUE(),FALSE()),
+"YearMonth", FORMAT ([Date], "YYYY-MM"),
+"Year Quarter", FORMAT([Date], "YYYY-Q" & FORMAT([Date], "Q"))
+)
