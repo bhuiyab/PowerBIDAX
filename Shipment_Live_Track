@@ -1,0 +1,25 @@
+//Live Track
+
+//Status table
+status = DISTINCT('live track'[Shipment Status])
+
+stage = 
+SWITCH(
+    TRUE(),
+    'status'[Shipment Status] = "Ordered",1,
+    'status'[Shipment Status] = "Sent",2,
+    'status'[Shipment Status] = "In Delivery",3,
+    'status'[Shipment Status] = "Delivered",4
+)
+
+line = 1
+
+line_highlights = 
+var shipment_status =
+SELECTEDVALUE('live track'[Shipment Status])
+var shipment_status_number = 
+CALCULATE(MAX('status'[stage]), 'status'[Shipment Status] = shipment_status)
+var result = 
+IF(SELECTEDVALUE('status'[stage]) <= shipment_status_number,[line])
+return
+result
