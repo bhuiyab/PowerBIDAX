@@ -1,0 +1,56 @@
+Column chart turn into line chart:
+
+1. we need 2 measures: column series & line series
+2. now calculate the inputs for the condition. Here min and max date of the selected period we need to calculate.
+
+-------------------------------------
+
+Column Series = 
+
+VAR MinDate = CALCULATE(MIN('Date'[Date]),ALLSELECTED('Date'))
+VAR MaxDate = CALCULATE(MAX('Date'[Date]),ALLSELECTED('Date'))
+VAR MonthDiff = DATEDIFF(MinDate, MaxDate, MONTH)
+
+RETURN 
+
+IF(
+    MonthDiff < 12, 
+    [Total Sales]
+)
+
+-------------------------------------
+
+Line Series = 
+
+VAR MinDate = CALCULATE(MIN('Date'[Date]),ALLSELECTED('Date'))
+VAR MaxDate = CALCULATE(MAX('Date'[Date]),ALLSELECTED('Date'))
+VAR MonthDiff = DATEDIFF(MinDate, MaxDate, MONTH)
+
+RETURN 
+
+IF(
+    MonthDiff >= 12, 
+    [Total Sales]
+)
+
+------------------------------------
+
+3. Now take line and column chart and in that add date in x-axis and add column series measure under column y-axis and line series under Line y-axis.
+4. Take a filter Viz and add date in that.
+5. Now need to check maximum and minimum of primary axis should be in sync.
+
+-----------------------------------
+Max = 
+MAXX(
+    SUMMARIZE(
+        ALLSELECTED( 'Date' ),
+        'Date'[Year],
+        'Date'[Month],
+        'Date'[Month Number]
+    ),
+    [Column Series] + [Line Series]
+)
+
+-------------------------------------
+
+6. Now go to format visual and add the Max measure under the maximum value under Y-axis and secondary Y-Axis.
